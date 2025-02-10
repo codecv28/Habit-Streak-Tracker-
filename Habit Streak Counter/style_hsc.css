@@ -1,0 +1,76 @@
+/* General Styles */
+a {
+    text-decoration: none;
+    color: black;
+    font-size: 70px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin-left: 20px;
+}
+
+.top {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.themes {
+    height: 20px;
+    margin-top: 40px;
+    margin-right: 20px;
+    border: 0px;
+    cursor: pointer;
+}
+
+.add {
+    border-radius: 18px;
+    cursor: pointer;
+    border: 0px;
+    background-color: rgb(250, 249, 249);
+    box-shadow: -4px 4px 8px grey;
+    margin-top: 400px;
+    margin-left: 1240px;
+    width: 60px;
+    height: 40px;
+}
+
+/* Popup styles */
+.create-task-popup {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+}
+
+/* Show popup when class is added */
+.create-task-popup.show {
+    display: block !important;
+}
+
+.popup-content {
+    max-width: 400px;
+}
+
+.popup-actions {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.popup-actions button {
+    padding: 10px 20px;
+    border: none;
+    background-color: #333;
+    color: #fff;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.popup-actions button:hover {
+    background-color: #444;
+}
