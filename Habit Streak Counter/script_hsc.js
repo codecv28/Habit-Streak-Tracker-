@@ -1,102 +1,123 @@
-document.addEventListener("DOMContentLoaded", function () {
-  console.log("JavaScript Loaded Successfully!"); // Debugging
 
-  // Buttons
-  const createBtn = document.getElementById("add_id");
-  const saveTaskBtn = document.getElementById("saveTask");
-  const cancelCreateTaskBtn = document.getElementById("cancelCreateTask");
-  const createTaskPopup = document.getElementById("createTaskPopup");
-  const taskList = document.getElementById("taskList");
 
-  let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+//Habit management functionality
+const createBtn = document.getElementById('createBtn');
+const saveHabitBtn = document.getElementById('saveHabit');
+const cancelCreateHabitBtn = document.getElementById('cancelCreateHabit');
+const createHabitPopup = document.getElementById('createHabitPopup');
+const noHabitMessage = document.getElementById('noHabitMessage');
+const HabitList = document.getElementById('HabitList');
 
-  // Show tasks initially
-  renderTasks();
+let Habits = JSON.parse(localStorage.getItem('Habits')) || [];
 
-  // Add button event
-  createBtn.addEventListener("click", () => {
-      console.log("Add button clicked!"); // Debugging log
-      createTaskPopup.classList.add("show");
-  });
+// Show tasks initially
+renderHabits();
 
-  // Cancel button event
-  cancelCreateTaskBtn.addEventListener("click", () => {
-      console.log("Cancel button clicked!"); // Debugging log
-      createTaskPopup.classList.remove("show");
-  });
-
-  // Save Task button event
-  saveTaskBtn.addEventListener("click", () => {
-      const taskName = document.getElementById("taskName").value;
-      const category = document.getElementById("category").value;
-      const dueDate = document.getElementById("dueDate").value;
-      const description = document.getElementById("description").value;
-
-      if (!taskName || !dueDate) {
-          alert("Task name and due date are required!");
-          return;
-      }
-
-      const newTask = {
-          id: Date.now(),
-          taskName,
-          category,
-          dueDate,
-          description,
-          important: false
-      };
-
-      tasks.push(newTask);
-      createTaskPopup.classList.remove("show");
-      document.getElementById("taskName").value = "";
-      document.getElementById("dueDate").value = "";
-      document.getElementById("description").value = "";
-      saveToLocalStorage();
-      renderTasks();
-  });
-
-  function saveToLocalStorage() {
-      localStorage.setItem("tasks", JSON.stringify(tasks));
-  }
-
-  function renderTasks() {
-      taskList.innerHTML = "";
-
-      tasks.forEach(task => {
-          const taskElement = document.createElement("div");
-          taskElement.classList.add("task");
-          if (task.important) {
-              taskElement.classList.add("important");
-          }
-          taskElement.innerHTML = `
-              <div class="task-header">
-                  <span>${task.taskName}</span>
-              </div>
-              <div class="task-body">
-                  <p>${task.category}</p>
-                  <p><strong>Due Date:</strong> ${task.dueDate}</p>
-                  <p>${task.description}</p>
-                  ${task.important ? '<span class="important-text">Important</span>' : ""}
-              </div>
-              <div class="task-footer">
-                  <button onclick="toggleImportant(${task.id})">Important</button>
-                  <button onclick="deleteTask(${task.id})">Delete</button>
-              </div>
-          `;
-          taskList.appendChild(taskElement);
-      });
-  }
-
-  window.toggleImportant = function (taskId) {
-      const task = tasks.find(t => t.id === taskId);
-      task.important = !task.important;
-      saveToLocalStorage();
-      renderTasks();
-  };
-
-  window.deleteTask = function (taskId) {
-      tasks = tasks.filter(t => t.id !== taskId);
-      saveToLocalStorage();
-      renderTasks();
-  };
+createBtn.addEventListener('click', () => {
+  createHabitPopup.style.display = 'block';
 });
+
+cancelCreateHabitBtn.addEventListener('click', () => {
+  createHabitPopup.style.display = 'none';
+});
+
+saveHabitBtn.addEventListener('click', () => {
+  const HabitName = document.getElementById('HabitName').value;
+  const description = document.getElementById('description').value;
+
+  if (!HabitName) {
+    alert('Habit name required!');
+    return;
+  }
+
+  const newHabit = {
+    id: Date.now(),
+    HabitName,
+    description,
+    show_more: false
+  };
+
+  Habits.push(newHabit);
+  createHabitPopup.style.display = 'none';
+  document.getElementById('HabitName').value = '';
+  document.getElementById('description').value = '';
+  saveToLocalStorage();
+  renderHabits();
+});
+
+// Save tasks to local storage
+function saveToLocalStorage() {
+  localStorage.setItem('Habits', JSON.stringify(Habits));
+}
+
+function renderHabits() {
+  HabitList.innerHTML = '';
+
+  if (Habits.length === 0) {
+    noHabitMessage.classList.add('show');
+  } else {
+    noHabitMessage.classList.remove('show');
+  }
+
+  Habits.forEach(Habit => {
+    const HabitElement = document.createElement('div');                                                
+    HabitElement.classList.add('Habit');
+    if (Habit.show_more) {
+      HabitElement.classList.add('show_more');
+    }
+    HabitElement.innerHTML = `
+      <div class="Habit-header">
+        <span>${Habit.HabitName}</span>                                                  
+      </div>
+      <div class="Habit-body">
+        <p>${Habit.description}</p>
+        ${Habit.show_more ? '<span class="show-more-text">Show more</span>' : ''}
+        <p>Streak: <span id="streak-${Habit.id}">${Habit.streak || 0}</span> days</p>
+
+      </div>
+      <div class="Habit-footer">
+        <button id="ShowmoreBtn" onclick="popupShowmore(${Habit.id})">Show more</button>
+        <button id="completeBtn" class="complete-btn" onclick="completedToday()">Complete</button>
+        <button onclick="deleteHabit(${Habit.id})">Delete</button>
+      </div>
+    `;
+
+    HabitList.appendChild(HabitElement);
+  });
+}
+
+ 
+
+function deleteHabit(HabitId) {
+  Habits = Habits.filter(t => t.id !== HabitId);
+  saveToLocalStorage();
+  renderHabits();
+}
+
+// Get the show more popup elements
+const showMorePopup = document.getElementById('showMorePopup');
+const closeShowMorePopupBtn = document.getElementById('closeShowMorePopup');
+const showMoreHabitName = document.getElementById('showMoreHabitName');
+const showMoreHabitDescription = document.getElementById('showMoreHabitDescription');
+
+ /*Function to show the "Show more" popup*/
+ function popupShowmore(HabitId) {
+    const selectedHabit = Habits.find(habit => habit.id === HabitId);
+
+     if (selectedHabit) {
+         showMoreHabitName.innerText = selectedHabit.HabitName;
+         showMoreHabitDescription.innerText = selectedHabit.description;
+         showMorePopup.style.display = 'block';
+     }
+ }
+
+
+
+// Close the popup when the close button is clicked
+closeShowMorePopupBtn.addEventListener('click', () => {
+    showMorePopup.style.display = 'none';
+});
+
+function completedToday() {
+    
+}
