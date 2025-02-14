@@ -1,55 +1,60 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Habit 21</title>
-    <link rel="stylesheet" href="style_hsc.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=add" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Habit Manager</title>
+  <link rel="stylesheet" href="style_TM.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=add" />
 </head>
 <body>
-    <div class="top">
-        <h1><a href="index_hsc.html">Habit 21</a></h1>
-        <button class="themes" id="themes_id">Appearance</button>
-    </div>
-    
-    <div class="main">
-        <div id="taskList" class="task-list"></div>
+  <div class="top">
+    <h1 class="heading"><a href="index_TM.html">Habit 21</a></h1>
+    <button class="create" id="createBtn"><span class="material-symbols-outlined">add</span></button>
 
-        <!-- Create Task Popup -->
-        <div id="createTaskPopup" class="create-task-popup">
-            <div class="popup-content">
-                <h2>Create Task</h2>
-                <label for="taskName">Task Name</label>
-                <input type="text" id="taskName" required />
-        
-                <label for="category">Category</label>
-                <select id="category">
-                    <option value="Study">Study</option>
-                    <option value="Work">Work</option>
-                    <option value="Personal">Personal</option>
-                </select>
-        
-                <label for="dueDate">Due Date</label>
-                <input type="date" id="dueDate" required />
-        
-                <label for="description">Description</label>
-                <textarea id="description"></textarea>
-        
-                <div class="popup-actions">
-                    <button id="saveTask">Save</button>
-                    <button id="cancelCreateTask">Cancel</button>
-                </div>
-            </div>
+  </div>
+
+  <div>
+       <!-- Display the "No Habit created" message -->
+      <div id="noHabitMessage" class="no-Habit-message">
+        Create New Habit
+      </div>
+
+      <div id="HabitList" class="Habit-list">
+        <!-- Tasks will be listed here -->
+      </div>
+
+      <!-- Create Task Popup (Initially hidden) -->
+      <div id="createHabitPopup" class="create-Habit-popup">
+        <div class="popup-content">
+          <h2>Create Habit</h2>
+          <label for="HabitName">Habit Name</label>
+          <input type="text" id="HabitName" required />
+
+          <label for="description">Description</label>
+          <textarea id="description"></textarea>
+
+          <div class="popup-actions">
+            <button id="saveHabit">Save</button>
+            <button id="cancelCreateHabit">Cancel</button>
+          </div>
         </div>
-    </div>
+      </div>
+  </div>
+  <div class="bottom">
+  </div>
 
-    <div class="bottom">
-        <button class="add" id="add_id">
-            <span class="material-symbols-outlined">add</span>
-        </button>
-    </div>
+  <!-- Show More Popup (Initially hidden) -->
+<div id="showMorePopup" class="create-Habit-popup">
+  <div class="popup-content">
+    <span id="closeShowMorePopup" class="close-btn">&times;</span>
+    <h2 id="showMoreHabitName"></h2>
+    <p id="showMoreHabitDescription"></p>
+    <p>Streak: <span id="streak-${Habit.id}">0</span> days</p>
+    <button id="completeBtn" class="complete-btn" onclick="completedToday()">Complete</button>
+  </div>
+</div>
 
-    <script src="script.js"></script>
+  <script src="script_TM.js"></script>
 </body>
 </html>
